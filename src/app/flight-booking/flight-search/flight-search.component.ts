@@ -24,9 +24,9 @@ export class FlightSearchComponent implements OnInit, OnDestroy {
 
   onDestroySubject = new Subject<void>();
 
-  basket: { [id: number]: boolean } = {
-    '3': true,
-    '5': true
+  basket: Record<number, boolean> = {
+    3: true,
+    5: true
   };
 
   constructor(private flightService: FlightService) {}
@@ -45,7 +45,7 @@ export class FlightSearchComponent implements OnInit, OnDestroy {
     const flightsObserver: Observer<Flight[]> = {
       next: (flights) => (this.flights = flights),
       error: (errResp) => console.error('Error loading flights', errResp),
-      complete: () => console.debug('complete')
+      complete: () => console.log('complete')
     };
 
     // 3. my subscription
