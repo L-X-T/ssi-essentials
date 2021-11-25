@@ -15,8 +15,10 @@
                [minlength]="minLength"
                [maxlength]="maxLength"
                pattern="[a-zA-ZäöüÄÖÜß ]*"
-               [city]="['Graz', 'Hamburg', 'Hamburg', 'München']">
+               asyncCity>
       </div>
+
+      <div *ngIf="flightSearchForm?.controls['from']?.pending">... Executing Async Validator ...</div>
 
       <flight-validation-errors fieldLabel="From"
                                 [errors]="flightSearchForm.controls?.from?.errors"
@@ -36,8 +38,10 @@
                [city]="['Graz', 'Salzburg', 'Hamburg', 'München']">
       </div>
 
+      <div *ngIf="flightSearchForm?.controls['to']?.pending">... Executing Async Validator ...</div>
+
       <flight-validation-errors fieldLabel="To"
-                                [errors]="flightSearchForm.controls?.to?.errors"
+                                [errors]="flightSearchForm.controls.to?.errors"
                                 [minLength]="minLength"
                                 [maxLength]="maxLength">
       </flight-validation-errors>
