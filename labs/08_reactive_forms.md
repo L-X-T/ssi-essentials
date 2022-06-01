@@ -13,7 +13,7 @@
 
 In this exercise, you will create a reactive form for editing flights.
 
-1. **If** you do not have a ``FlugEditComponent`` yet: Create a ``FlugEditComponent`` in the ``FlightBookingModule`` and call it up in the template of the ``FlightSearchComponent``.
+1. **If** you do not have a ``FlightEditComponent`` yet: Create a ``FlightEditComponent`` in the ``FlightBookingModule`` and call it up in the template of the ``FlightSearchComponent``.
 
 2. Import the ``ReactiveFormsModule`` into your ``FlightBookingModule``.
 
@@ -139,7 +139,7 @@ In this exercise, you will create a reactive form for editing flights.
     </p>
     </details>
 
-7. Register for ``valueChanges`` on your ``editForm`` and output the received value on the console in order to keep up to date with changes to the form.
+7. Register for ``valueChanges`` on your ``editForm`` and output the received value on the console in order to keep up to date with changes to the form. Please note: If you cannot see any debug messages in your DevTools Console, please make sure you checked "Verbose" in your "Default Levels" settings.
 
     <details>
     <summary>Show source</summary>
@@ -201,6 +201,8 @@ In this exercise, you will create a reactive form for editing flights.
     </details>
 
 9. Test your solution. If everything works, you should see every change you make to the form in the console output.
+
+**Please note** if you cannot see your `FlightEditComponent`, don't forget to add id, e.g. to the `SearchFormComponent` at the bottom. If you cannot see any debug messages in your `DevTools Console`, please make sure you checked `Verbose` in your browsers `Default Levels` settings.
 
 ## Using Angular Validators
 
@@ -404,13 +406,15 @@ In this exercise you will write a multifield validator that ensures that a diffe
 
     ```typescript
     [...]   
-    export function validateRoundTrip(g: FormGroup): object {
-       let from = g.controls['from'];
-       let to = g.controls['to'];
+    export function validateRoundTrip(form: FormGroup): ValidationErrors | null {
+       const fromCtrl = form.controls.from;
+       const toCtrl = form.controls.to;
 
-       if (!from || !to) return null;
+       if (!fromCtrl || !toCtrl) {
+         return null
+       };
 
-       if (from.value === to.value) {
+       if (fromCtrl.value && fromCtrl.value === toCtrl.value) {
            return { roundTrip: true };
        }
 

@@ -211,9 +211,9 @@ In this exercise you will implement Preloading using Angular's `PreloadAllModule
     delay() {
         const ONE_MINUTE = 1000 * 60;
 
-        let oldFlights = this.flights;
-        let oldFlight = oldFlights[0];
-        let oldDate = new Date(oldFlight.date);
+        const oldFlights = this.flights;
+        const oldFlight = oldFlights[0];
+        const oldDate = new Date(oldFlight.date);
         
         // Mutable
         // oldDate.setTime(oldDate.getTime() + 15 * ONE_MINUTE );

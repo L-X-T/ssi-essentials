@@ -25,7 +25,7 @@ You can use the following procedure as a guide:
     <p>
 
     ```html
-    <form #form="ngForm">
+    <form #flightSearchForm="ngForm">
         [...]
         <input name="from" [(ngModel)]="from" [...]>
         [...]
@@ -48,13 +48,13 @@ You can use the following procedure as a guide:
            required		
            minlength="3"		
            maxlength="15"		
-           pattern="[a-zA-Z ]*">		
+           pattern="[a-zA-ZäöüÄÖÜß ]*">		
 
-    <pre>{{form?.controls['from']?.errors | json}}</pre>
+    <pre>{{flightSearchForm?.controls.from?.errors | json}}</pre>
 
     [...]
     <div class="text-danger" 
-         *ngIf="form?.controls['from']?.hasError('minlength')">		
+         *ngIf="flightSearchForm?.controls.from?.hasError('minlength')">		
         ... minlength ...
     </div>		
     [...]
@@ -99,7 +99,7 @@ This component should be able to be called up as follows:
     <input class="form-control" [(ngModel)]="from" name="from" 
            required minlength="3">
     
-    <flight-validation-errors [errors]="form?.controls['from']?.errors">
+    <flight-validation-errors [errors]="flightSearchForm?.controls.from?.errors">
     </flight-validation-errors>
 </div>
 ```
@@ -185,10 +185,10 @@ You can use the following procedure as a guide:
            required		
            minlength="3"		
            maxlength="15"		
-           pattern="[a-zA-Z ]*"
+           pattern="[a-zA-ZäöüÄÖÜß ]*"
            city>	
     [...]
-    <div *ngIf="form?.controls['from']?.hasError('city')">
+    <div *ngIf="flightSearchForm?.controls.from?.hasError('city')">
         ... city ...
     </div>
     [...]
@@ -329,7 +329,7 @@ You can use the following procedure as a guide:
 
         validate(c: AbstractControl): Observable<ValidationErrors | null> {
             return this.flightService.find(c.value, '').pipe(
-                map(flights => (flights.length) > 0 ? {} : {asyncCity: true}),
+                map(flights => (flights.length) > 0 ? null : {asyncCity: true}),
                 delay(4000) // <-- delay; can be removed later...
             );
         }
@@ -351,11 +351,11 @@ You can use the following procedure as a guide:
            required		
            minlength="3"		
            maxlength="15"		
-           pattern="[a-zA-Z ]*"
+           pattern="[a-zA-ZäöüÄÖÜß ]*"
            asyncCity
            city="Graz,Hamburg,Zürich">	
     [...]
-    <div *ngIf="form?.controls['from']?.hasError('asyncCity')">
+    <div *ngIf="flightSearchForm?.controls.from?.hasError('asyncCity')">
         ... asyncCity ...
     </div>
     [...]
@@ -371,7 +371,7 @@ You can use the following procedure as a guide:
     <p>
 
     ```html
-    <div *ngIf="form?.controls['from']?.pending">
+    <div *ngIf="flightSearchForm?.controls.from?.pending">
         ... Executing Async Validator ...
     </div>
     [...]
@@ -401,10 +401,10 @@ In this case, the ``validate`` method can convert the transferred ``AbstractCont
 ```TypeScript
 validate(c: AbstractControl): object {
 
-    let group: FormGroup = c as FormGroup; // type cast
+    const group: FormGroup = c as FormGroup; // type cast
 
-    let fromCtrl = group.controls['from'];
-    let toCtrl = group.controls['to'];
+    const fromCtrl = group.controls.from;
+    const toCtrl = group.controls.to;
 
     if (!fromCtrl || !toCtrl) return { };
 
@@ -429,8 +429,8 @@ return { }
 After **registering and exporting** in the the ``SharedModule``, the validation directive can be used for the respective ``from`` element:
 
 ```html
-<form #form="ngForm" roundTrip>
-    <div *ngIf="form?.hasError('roundTrip')">...roundTrip...</div>
+<form #flightSearchForm="ngForm" roundTrip>
+    <div *ngIf="flightSearchForm?.hasError('roundTrip')">...roundTrip...</div>
     [...]
 </form>
 ```
