@@ -76,16 +76,12 @@ If you want, guide the following through the exercise:
         HttpClientModule,
 
         RouterModule.forRoot(APP_ROUTES) // <-- Add this line!
-
       ],
       declarations: [
         AppComponent,
         SidebarComponent,
         NavbarComponent,
         HomeComponent
-      ],
-      providers: [
-          […]
       ],
       bootstrap: [AppComponent]
     })
@@ -393,9 +389,8 @@ In this exercise you create the opportunity to edit the flight presented in the 
       flight: Flight;
       errors: string;
 
-      constructor(
-        private route: ActivatedRoute,
-        private flightService: FlightService) { }
+      constructor(private route: ActivatedRoute,
+                  private flightService: FlightService) {}
 
       […]
     }
@@ -462,7 +457,7 @@ In this exercise you create the opportunity to edit the flight presented in the 
     <div class="form-group">
         <label>From:</label>
         <input [(ngModel)]="flight.from" name="from" 
-              class="form-control">
+               class="form-control">
     </div>
 
     <!-- Add more fields for the other attributes of flight -->
@@ -472,7 +467,7 @@ In this exercise you create the opportunity to edit the flight presented in the 
     </form>
     ```
    
-5. Open the file ``flight-booking.module.ts`` and make sure that the ``FlightService`` is registered here.
+5. If - and only if - you have not provided your ``FlightService`` in root (the ``AppModule`` via the ``@Injectable()`` decorator). Open the file ``flight-booking.module.ts`` and make sure that the ``FlightService`` is registered here.
 
     <details>
     <summary>Show source</summary>

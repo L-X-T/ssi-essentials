@@ -1,110 +1,14 @@
-# Template Driven Forms
+# Template Driven Forms - Custom Validators
 
-- [Template Driven Forms](#angular-workshop-template-driven-forms)
-  - [Built-in validators](#built-in-validators)
-  - [Bonus: Reusable component for displaying the validation errors *](#Bonus-Reusable-component-for-displaying-the-validation-errors-)
-  - [Own validator](#Own-validator)
-  - [Parameterizable validator](#Parameterizable-validator)
-  - [Bonus: Asynchronous Validator *](#Bonus-Asynchronous-Validator-)
-  - [Bonus: Multifield Validator *](#Bonus-Multifield-Validator-)
-  - [Bonus: Parametrizable Multifield Validator **](#Bonus-Parametrizable-Multifield-Validator-)
-  - [Bonus: Asynchronous Multifield Validator ***](#Bonus-Asynchronous-Multifield-Validator-)
-  - [Bonus: Formatted date in text field ***](#Bonus-Formatted-date-in-text-field-)
-  - [Bonus: Component for editing a date ***](#Bonus-Component-for-editing-a-date-)
+- [Angular Workshop: Template Driven Forms](#angular-workshop-template-driven-forms)
+  - [Custom Validator](#custom-validator)
+  - [Parameterized Validator](#parameterized-validator)
+  - [Bonus: Asynchronous Validator *](#bonus-asynchronous-validator-)
+  - [Bonus: Multi-Field-Validator *](#bonus-multi-field-validator-)
+  - [Bonus: Parameterized Multi-Field-Validator **](#bonus-parameterized-multi-field-validator-)
+  - [Bonus: Asynchronous Multi-Field-Validator ***](#bonus-asynchronous-multi-field-validator-)
 
-## Built-in validators
-
-In this exercise you will validate the entries in the search form of the ``FlightSearchComponent`` with the build-in validators ``required``, ``minlength``, ``maxlength`` and ``pattern`` and output any validation errors.
-
-You can use the following procedure as a guide:
-
-1. Make sure that the search fields are in a ``form`` element and set up a handle for this element. Also make sure that each input field has a ``name`` attribute.
-
-    <details>
-    <summary>Show source</summary>
-    <p>
-
-    ```html
-    <form #flightSearchForm="ngForm">
-        [...]
-        <input name="from" [(ngModel)]="from" [...]>
-        [...]
-        <input name="to" [(ngModel)]="to" [...]>
-        [...]
-    </form>
-    ```
-
-    </p>
-    </details>
-
-2. Extend the search field ``from`` to include the validation attributes mentioned above and report any validation errors.
-
-    <details>
-    <summary>Show source</summary>
-    <p>
-    
-    ```html
-    <input name="from" [(ngModel)]="from"   
-           required		
-           minlength="3"		
-           maxlength="15"		
-           pattern="[a-zA-ZäöüÄÖÜß ]*">		
-
-    <pre>{{flightSearchForm?.controls.from?.errors | json}}</pre>
-
-    [...]
-    <div class="text-danger" 
-         *ngIf="flightSearchForm?.controls.from?.hasError('minlength')">		
-        ... minlength ...
-    </div>		
-    [...]
-    ```
-    
-    </p>
-    </details>
-
-3. Test your solution
-
-## Bonus: Reusable component for displaying the validation errors *
-
-In order not to have to query the validation errors in the same way over and over again for each input field, it is advisable to use a central component. This can receive the property ``errors`` of the validated ``FormControl``. For example, the expression ``f?.Controls['from']?.errors`` returns the following object if both the validator ``minlength`` and a possibly self-written``city`` validator fail:
-
-```json
-{
-  "minlength": {
-    "requiredLength": 3,
-    "actualLength": 1
-  },
-  "city": true
-}
-```
-
-Write a component that receives this ``errors`` object (``@Input() errors: any;``) and outputs an error message for each of the errors in it. To check whether this object exists and whether it indicates a specific error, *ngIf can be used:
-
-```html
-<div *ngIf="errors && errors['required']">
-    This field is required.
-</div>
-
-<div *ngIf="errors && errors['minlength']">
-    This field is too short.
-</div>
-```
-
-This component should be able to be called up as follows:
-
-```html
-<div class="form-group">
-    <label>From</label>
-    <input class="form-control" [(ngModel)]="from" name="from" 
-           required minlength="3">
-    
-    <flight-validation-errors [errors]="flightSearchForm?.controls.from?.errors">
-    </flight-validation-errors>
-</div>
-```
-
-## Own validator
+## Custom Validator
 
 In this exercise you will provide your own validator in the form of a directive. This should check registered city names against a hard-coded whitelist and can be used as follows:
 
@@ -125,7 +29,7 @@ You can use the following procedure as a guide:
     <details>
     <summary>Show source</summary>
     <p>
-    
+
     ```TypeScript
     @Directive({
         selector: '[city]',
@@ -139,7 +43,7 @@ You can use the following procedure as a guide:
         [...]
     }    
     ```
-    
+
     </p>
     </details>
 
@@ -199,7 +103,7 @@ You can use the following procedure as a guide:
 
 7. Test your solution.
 
-## Parameterizable validator
+## Parameterizable Validator
 
 In this exercise you will parameterize the validator from the last exercise so that the whitelist with the valid cities can be passed:
 
@@ -214,7 +118,7 @@ You can follow the following procedure:
     <details>
     <summary>Show source</summary>
     <p>
-    
+
     ```TypeScript
     @Directive({
     ...
@@ -236,7 +140,7 @@ You can follow the following procedure:
         }
     }    
     ```
-    
+
     </p>
     </details>
 
@@ -265,7 +169,7 @@ You can use the following procedure as a guide:
     <details>
     <summary>Show source</summary>
     <p>
-    
+
     ```TypeScript
     @Directive({
         selector: '[asyncCity]',
@@ -279,7 +183,7 @@ You can use the following procedure as a guide:
         [...]
     }    
     ```
-    
+
     </p>
     </details>
 
@@ -288,7 +192,7 @@ You can use the following procedure as a guide:
     <details>
     <summary>Show source</summary>
     <p>
-    
+
     ```TypeScript
     @Directive({
         [...]
@@ -300,7 +204,7 @@ You can use the following procedure as a guide:
         [...]
     }    
     ```
-    
+
     </p>
     </details>
 
@@ -430,8 +334,8 @@ After **registering and exporting** in the the ``SharedModule``, the validation 
 
 ```html
 <form #flightSearchForm="ngForm" roundTrip>
-    <div *ngIf="flightSearchForm?.hasError('roundTrip')">...roundTrip...</div>
-    [...]
+  <div *ngIf="flightSearchForm?.hasError('roundTrip')">...roundTrip...</div>
+  [...]
 </form>
 ```
 
