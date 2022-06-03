@@ -76,16 +76,12 @@ If you want, guide the following through the exercise:
         HttpClientModule,
 
         RouterModule.forRoot(APP_ROUTES) // <-- Add this line!
-
       ],
       declarations: [
         AppComponent,
         SidebarComponent,
         NavbarComponent,
         HomeComponent
-      ],
-      providers: [
-          […]
       ],
       bootstrap: [AppComponent]
     })
@@ -134,7 +130,6 @@ If you want, guide the following through the exercise:
          SharedModule,
 
          RouterModule.forChild(FLIGHT_BOOKING_ROUTES) // <-- Add this line!
-
        ],
        declarations: [
          FlightSearchComponent,
@@ -179,20 +174,28 @@ If you want, guide the following through the exercise:
 
     ```HTML
     <ul class="nav">
-        <li>
-            <i class="ti-home"></i>
-            <p><a routerLink="home">Home</a></p>
-        </li>
+      <li routerLinkActive="active">
+        <a routerLink="home">
+          <i class="ti-home"></i>
+          <p>Home</p>
+        </a>
+      </li>
 
-        <li>
-            <i class="ti-arrow-top-right"></i>
-            <p><a routerLink="flight-search">Flights</a></p>
-        </li>
+      <li routerLinkActive="active">
+        <a routerLink="flight-search">
+          <i class="ti-arrow-top-right"></i>
+          <p>Flights</p>
+        </a>
+      </li>
 
-        <li>
-            <i class="ti-user"></i>
-            <p><a routerLink="passenger-search">Passengers</a></p>
-        </li>
+      <li routerLinkActive="active">
+        <a routerLink="passenger-search">
+          <i class="ti-user"></i>
+          <p>Passengers</p>
+        </a>
+      </li>
+   
+      [...]
     </ul>
     ```
 
@@ -229,7 +232,7 @@ In this exercise you will create a new component ``FlightEditComponent`` in the 
 
 This should receive an Id as a url segment and a matrix parameter showDetails which for the time being will only be printed in the template. The component should be able to be called up via your ``FlightCardComponents``.
 
-1.Create a ``FlightEditComponent`` (as a dummy component) in the folder ``src/app/flight-booking/flight-edit``.
+1. Create a ``FlightEditComponent`` (as a dummy component) in the folder ``src/app/flight-booking/flight-edit``.
 
 2. Open the file ``flight-booking.module.ts`` and make sure that the new component is registered in the ``FlightBookingModule``.
 
@@ -252,10 +255,10 @@ This should receive an Id as a url segment and a matrix parameter showDetails wh
         private route: ActivatedRoute) { }
 
       ngOnInit(): void {
-        this.route.params.subscribe(
-          params => {
-            this.id = params['id'];
-            this.showDetails = params['showDetails'];
+        this.route.paramMap.subscribe(
+          paramMap => {
+            this.id = paramMap.get('id');
+            this.showDetails = paramMap.get('showDetails');
           }
         );
       }
@@ -386,9 +389,8 @@ In this exercise you create the opportunity to edit the flight presented in the 
       flight: Flight;
       errors: string;
 
-      constructor(
-        private route: ActivatedRoute,
-        private flightService: FlightService) { }
+      constructor(private route: ActivatedRoute,
+                  private flightService: FlightService) {}
 
       […]
     }
@@ -413,14 +415,14 @@ In this exercise you create the opportunity to edit the flight presented in the 
       […]
 
       ngOnInit(): void {
-        this.route.params.subscribe(
-          params => {
-            this.id = params['id'];
-            this.showDetails = params['showDetails'];
+        this.route.paramMap.subscribe(
+          paramMap => {
+            this.id = paramMap.get('id');
+            this.showDetails = paramMap.get('showDetails');
 
             this.flightService.findById(this.id).subscribe(
               flight => { this.flight = flight; this.errors = ''; },
-              err => { this.errors = 'Fehler beim Laden'; }
+              err => { this.errors = 'Error loading data'; }
             );
           }
         )
@@ -455,7 +457,7 @@ In this exercise you create the opportunity to edit the flight presented in the 
     <div class="form-group">
         <label>From:</label>
         <input [(ngModel)]="flight.from" name="from" 
-              class="form-control">
+               class="form-control">
     </div>
 
     <!-- Add more fields for the other attributes of flight -->
@@ -465,7 +467,7 @@ In this exercise you create the opportunity to edit the flight presented in the 
     </form>
     ```
    
-5. Open the file ``flight-booking.module.ts`` and make sure that the ``FlightService`` is registered here.
+5. If - and only if - you have not provided your ``FlightService`` in root (the ``AppModule`` via the ``@Injectable()`` decorator). Open the file ``flight-booking.module.ts`` and make sure that the ``FlightService`` is registered here.
 
     <details>
     <summary>Show source</summary>

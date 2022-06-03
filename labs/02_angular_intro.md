@@ -70,14 +70,12 @@ In this first part of the exercise you will implement the _FlightSearchComponent
     })
     export class FlightSearchComponent implements OnInit {
 
-      from: string;
-      to: string;
+      from = '';
+      to = '';
       flights: Flight[] = [];
       selectedFlight: Flight;
 
       constructor(private http: HttpClient) { }
-
-      ngOnInit(): void { }
 
       search(): void {
         // implementation will follow shortly
@@ -196,7 +194,6 @@ In this first part of the exercise you will implement the _FlightSearchComponent
 
     ```HTML
     <div class="card">
-
       <table class="table table-contensed">
       <thead>
       <tr>
@@ -217,7 +214,6 @@ In this first part of the exercise you will implement the _FlightSearchComponent
         </td>
       </tr>
       </table>
-
     </div>
     ```
 
@@ -229,7 +225,6 @@ In this first part of the exercise you will implement the _FlightSearchComponent
 
     ```HTML
     <div class="card">
-
       <table class="table table-contensed" *ngIf="flights.length > 0">
       <thead>
       <tr>
@@ -287,7 +282,6 @@ In this first part of the exercise you will implement the _FlightSearchComponent
          FlightSearchComponent,
          […] // keep the rest here
        ],
-       providers: [],
        bootstrap: [AppComponent]
      })
      export class AppModule { }

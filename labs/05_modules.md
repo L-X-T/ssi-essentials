@@ -62,19 +62,17 @@ Remember that the ``SharedModule`` and the ``FlightBookingModule`` must import t
 
     ```TypeScript
     @NgModule({
-    imports: [
-      CommonModule,
-      FormsModule,
-      SharedModule
-    ],
-    declarations: [
-      FlightSearchComponent
-    ],
-    providers:[
-    ],
-    exports: [
-      FlightSearchComponent
-    ]
+      imports: [
+        CommonModule,
+        FormsModule,
+        SharedModule
+      ],
+      declarations: [
+        FlightSearchComponent
+      ],
+      exports: [
+        FlightSearchComponent
+      ]
     })
     export class FlightBookingModule { }
     ```
@@ -85,20 +83,20 @@ Remember that the ``SharedModule`` and the ``FlightBookingModule`` must import t
 
     ```TypeScript
     @NgModule({
-    imports: [
-      BrowserModule,
-      HttpClientModule,
-      FlightBookingModule // <-- important
-    ],
-    declarations: [
-      AppComponent,
-      SidebarComponent,
-      NavbarComponent
-    ],
-    providers: [
-      […]
-    ],
-    bootstrap: [AppComponent]
+      imports: [
+        BrowserModule,
+        HttpClientModule,
+        FlightBookingModule // <-- important
+      ],
+      declarations: [
+        AppComponent,
+        SidebarComponent,
+        NavbarComponent
+      ],
+      providers: [
+        […]
+      ],
+      bootstrap: [AppComponent]
     })
     export class AppModule { }
     ```

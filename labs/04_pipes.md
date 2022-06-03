@@ -76,9 +76,6 @@
         FlightSearchComponent,
         CityPipe   // <-- this line should be here!
       ],
-      providers: [
-        […]
-      ],
       bootstrap: [AppComponent]
     })
     export class AppModule { }

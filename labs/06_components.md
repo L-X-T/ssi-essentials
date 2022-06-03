@@ -25,24 +25,21 @@ In this exercise you will first create the FlightCardComponent shown. Then you w
     })
     export class FlightCardComponent implements OnInit {
 
-      constructor() { }
-
       @Input() item: Flight;
-      @Input() selected: boolean;
-      @Output() selectedChange = new EventEmitter<boolean>();
+      @Input() isSelected: boolean;
+      @Output() isSelectedChange = new EventEmitter<boolean>();
 
       ngOnInit(): void {}
 
       select(): void {
-        this.selected = true;
-        this.selectedChange.next(this.selected);
+        this.isSelected = true;
+        this.isSelectedChange.next(this.isSelected);
       }
 
       deselect(): void {
-        this.selected = false;
-        this.selectedChange.next(this.selected);
+        this.isSelected = false;
+        this.isSelectedChange.next(this.isSelected);
       }
-
     }
     ```
 
@@ -51,7 +48,7 @@ In this exercise you will first create the FlightCardComponent shown. Then you w
 3. Open the template of this component (``flight-card.component.html``). Expand this file so that the map is displayed:
 
     ```TypeScript
-    <div class="card" [ngStyle]="{'background-color': (selected) ? 'rgb(204, 197, 185)' : 'white' }">
+    <div class="card" [style.background-color]="isSelected ? 'rgb(204, 197, 185)' : 'white'">
       <div class="header">
         <h2 class="title">{{item.from}} - {{item.to}}</h2>
       </div>
@@ -62,11 +59,11 @@ In this exercise you will first create the FlightCardComponent shown. Then you w
         <p>
           <button
             class="btn btn-default"
-            *ngIf="!selected"
+            *ngIf="!isSelected"
             (click)="select()">Select</button>
           <button
             class="btn btn-default"
-            *ngIf="selected"
+            *ngIf="isSelected"
             (click)="deselect()">Remove</button>
         </p>
       </div>
@@ -83,19 +80,18 @@ In this exercise you will first create the FlightCardComponent shown. Then you w
     
     ```TypeScript
     @NgModule({
-    imports: [
-      CommonModule,
-      FormsModule,
-      SharedModule
-    ],
-    declarations: [
-      FlightSearchComponent,
-      FlightCardComponent  // <-- important
-    ],
-    providers:[ ],
-    exports: [
-      FlightSearchComponent
-    ]
+      imports: [
+        CommonModule,
+        FormsModule,
+        SharedModule
+      ],
+      declarations: [
+        FlightSearchComponent,
+        FlightCardComponent  // <-- important
+      ],
+      exports: [
+        FlightSearchComponent
+      ]
     })
     export class FlightBookingModule { }
     ```
@@ -108,13 +104,13 @@ In this exercise you will first create the FlightCardComponent shown. Then you w
     ```TypeScript
     export class FlightSearchComponent implements OnInit {
 
-      from: string;
-      to: string;
+      from = '';
+      to = '';
       flights: Flight[] = [];
       selectedFlight: Flight;
 
 
-      basket: object = {   // <-- new attribute
+      basket: { [id: number]: boolean } = {   // <-- new attribute
         "3": true,
         "5": true
       };
@@ -125,7 +121,7 @@ In this exercise you will first create the FlightCardComponent shown. Then you w
 
 6. Open the file _flight-search.component.html_. Comment out the tabular output of the flights found.
 
-7. Instead of the table, use the new element ``flight-card`` to display the flights found. To do this, create an explicit binding for the properties ``item``, ``selected`` and the event ``selectedChange``.
+7. Instead of the table, use the new element ``flight-card`` to display the flights found. To do this, create an explicit binding for the properties ``item``, ``isSelected`` and the event ``isSelectedChange``.
 
     <details>
     <summary>Show source</summary>
@@ -135,11 +131,11 @@ In this exercise you will first create the FlightCardComponent shown. Then you w
     <div class="row">
       <div *ngFor="let f of flights" 
       class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-      <flight-card
-        [item]="f"
-        [selected]="basket[f.id]"
-        (selectedChange)="basket[f.id] = $event">
-      </flight-card>
+        <flight-card
+            [item]="f"
+            [isSelected]="basket[f.id]"
+            (isSelectedChange)="basket[f.id] = $event">
+        </flight-card>
       </div>
     </div>
     ```
@@ -156,7 +152,7 @@ In this exercise you will first create the FlightCardComponent shown. Then you w
     ```HTML
     <div class="card">
       <div class="content">
-      <pre>{{ basket | json }}</pre>
+        <pre>{{ basket | json }}</pre>
       </div>
     </div>
     ```
@@ -166,7 +162,7 @@ In this exercise you will first create the FlightCardComponent shown. Then you w
 
 9. Test your solution.
 
-10. When calling the _FlugCardComponent_, use a two-way binding using the "Banana-in-a-Box syntax" instead of the bindings for _selected_ and _selectedChanged_.
+10. When calling the _FlightCardComponent_, use a two-way binding using the "Banana-in-a-Box syntax" instead of the bindings for _isSelected_ and _isSelectedChanged_.
 
     <details>
     <summary>Show source</summary>
@@ -175,11 +171,11 @@ In this exercise you will first create the FlightCardComponent shown. Then you w
     ```TypeScript
     <div class="row">
       <div *ngFor="let f of flights" 
-      class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-      <flight-card
-        [item]="f"
-        [(selected)]="basket[f.id]">
-      </flight-card>
+           class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+        <flight-card
+            [item]="f"
+            [(isSelected)]="basket[f.id]">
+        </flight-card>
       </div>
     </div>
     ```
